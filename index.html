@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Drone Football</title>
+<style>
+:root{--bg:#eef5ff;--card:rgba(255,255,255,.65);--text:#123;--a:#4facfe;--b:#00f2fe}
+body.dark{--bg:#08111f;--card:rgba(20,30,50,.6);--text:#eef}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;padding-top:70px;font-family:Arial;background:linear-gradient(135deg,var(--bg),#b7d8ff);color:var(--text);transition:.4s}
+body.dark{background:linear-gradient(135deg,#08111f,#16253d)}
+nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;padding:15px 30px;background:rgba(0,0,0,.2);backdrop-filter:blur(10px)}
+nav a{color:inherit;text-decoration:none;margin:0 10px}
+button{padding:10px 16px;border:none;border-radius:20px;background:linear-gradient(90deg,var(--a),var(--b));cursor:pointer}
+.hero{min-height:80vh;display:grid;place-items:center;text-align:center;padding:40px}
+h1{font-size:3.5rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;padding:40px}
+.card{background:var(--card);backdrop-filter:blur(12px);padding:20px;border-radius:20px;box-shadow:0 8px 25px rgba(0,0,0,.15);transition:.3s}
+.card:hover{transform:translateY(-8px)}
+.placeholder{height:180px;border:2px dashed #888;border-radius:16px;display:grid;place-items:center;margin-top:15px}
+footer{text-align:center;padding:30px}
+</style></head>
+<body>
+<nav><strong>🚁 Drone Football</strong><div><a href="#about">About</a><a href="#play">Play</a><a href="#repair">Repair</a><button onclick="document.body.classList.toggle('dark');localStorage.theme=document.body.classList.contains('dark')?'dark':'light'">🌙 Theme</button></div></nav>
+<section class="hero"><div><h1>Drone Football</h1><p>Experience the futuristic aerial sport where pilots fly protective drones through an arena and score by passing a ball through the opponent's goal ring.</p><button onclick="about.scrollIntoView()">Explore</button></div></section>
+<section id="about" class="grid">
+<div class="card"><h2>What is Drone Football?</h2><p>Drone football is a competitive team sport using enclosed quadcopters that carry a lightweight ball. Teams work together to attack, defend, and score while avoiding collisions.</p><div class="placeholder">📷 Drone Football Arena Image</div></div>
+<div class="card"><h2>How to Play</h2><ul><li>Two teams compete.</li><li>One scoring drone attempts goals.</li><li>Defenders block opponents.</li><li>Highest score wins.</li></ul><div class="placeholder">📷 Match Action Image</div></div>
+</section>
+<section id="play" class="grid">
+<div class="card"><h2>Controls</h2><p>Typical controller sticks:</p><ul><li>Throttle: Up/Down</li><li>Yaw: Turn Left/Right</li><li>Pitch: Forward/Back</li><li>Roll: Left/Right movement</li></ul><div class="placeholder">📷 Controller Diagram</div></div>
+<div class="card"><h2>Flying Tips</h2><p>Practice hovering, smooth turns, coordinated team movement, and obstacle avoidance before competitive play.</p></div>
+</section>
+<section id="repair" class="grid">
+<div class="card"><h2>Repairing Drones</h2><ol><li>Power off.</li><li>Inspect frame.</li><li>Replace damaged propellers.</li><li>Check motors.</li><li>Reconnect loose wires.</li><li>Test safely.</li></ol><div class="placeholder">📷 Repair Process</div></div>
+<div class="card"><h2>Maintenance Checklist</h2><p>✓ Battery health<br>✓ Propellers<br>✓ Screws<br>✓ Motors<br>✓ Flight controller<br>✓ Firmware updates</p></div>
+</section>
+<footer>Designed with a futuristic glassmorphism style • Drone Football Demo</footer>
+<script>
+if(localStorage.theme==='dark')document.body.classList.add('dark');
+</script>
+</body></html>
