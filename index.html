@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='feeby.png') }}">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Drone Football</title>
+<title>無人機足球</title>
 <style>
 :root{--bg:#eef5ff;--card:rgba(255,255,255,.65);--text:#123;--a:#4facfe;--b:#00f2fe}
 body.dark{--bg:#08111f;--card:rgba(20,30,50,.6);--text:#eef}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;padding-top:70px;font-family:Arial;background:linear-gradient(135deg,var(--bg),#b7d8ff);color:var(--text);transition:.4s}
 body.dark{background:linear-gradient(135deg,#08111f,#16253d)}
-nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;padding:15px 30px;background:rgba(0,0,0,.2);backdrop-filter:blur(10px)}
+nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;justify-content:right;padding:15px 30px;background:rgba(0,0,0,.2);backdrop-filter:blur(10px)}
 nav a{color:inherit;text-decoration:none;margin:0 10px}
 button{padding:10px 16px;border:none;border-radius:20px;background:linear-gradient(90deg,var(--a),var(--b));cursor:pointer}
 .hero{min-height:80vh;display:grid;place-items:center;text-align:center;padding:40px}
@@ -17,24 +18,204 @@ h1{font-size:3.5rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,min
 .card:hover{transform:translateY(-8px)}
 .placeholder{height:180px;border:2px dashed #888;border-radius:16px;display:grid;place-items:center;margin-top:15px}
 footer{text-align:center;padding:30px}
+
+.title {
+	margin-right: auto;
+}
+
+.theme-switch{
+    position:relative;
+    display:inline-block;
+    width:70px;
+    height:36px;
+}
+
+.theme-switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    cursor:pointer;
+    border-radius:999px;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    transition:.35s;
+    overflow:hidden;
+    box-shadow:0 0 15px rgba(79,172,254,.4);
+}
+
+.slider::before{
+    content:"";
+    position:absolute;
+    width:28px;
+    height:28px;
+    left:4px;
+    top:4px;
+    background:white;
+    border-radius:50%;
+    transition:.35s;
+    box-shadow:0 4px 12px rgba(0,0,0,.3);
+}
+
+input:checked + .slider{
+    background:linear-gradient(135deg,#1a2a6c,#0f2027);
+}
+
+input:checked + .slider::before{
+    transform:translateX(34px);
+}
+
+.sun{
+	position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:15px;
+    pointer-events:none;
+    left:8px;
+}
+
+.moon{
+	position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:15px;
+    pointer-events:none;
+    right:8px;
+}
+
+#droneContainer{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:-1;
+}
+
+.flyingDrone{
+    position:absolute;
+    width:40px;
+    user-select:none;
+    opacity:0.75;
+    animation-timing-function:linear;
+}
+
+.img{
+	width: 100%;
+	object-fit: contain;
+}
 </style></head>
 <body>
-<nav><strong>🚁 Drone Football</strong><div><a href="#about">About</a><a href="#play">Play</a><a href="#repair">Repair</a><button onclick="document.body.classList.toggle('dark');localStorage.theme=document.body.classList.contains('dark')?'dark':'light'">🌙 Theme</button></div></nav>
-<section class="hero"><div><h1>Drone Football</h1><p>Experience the futuristic aerial sport where pilots fly protective drones through an arena and score by passing a ball through the opponent's goal ring.</p><button onclick="about.scrollIntoView()">Explore</button></div></section>
+<div id="droneContainer"></div>
+<nav><img src="feeby.png" width="32" height="32"><div class="title"><a href="#top"><strong>無人機足球</strong></a></div><div><a href="#about">簡介</a><a href="#controls">操作</a><a href="#battery">電池</a><a href="#rules">規則</a></div>
+<label class="theme-switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+    </span>
+</label>
+</nav>
+<section class="hero"><div><h1>無人機足球</h1><p>結合科技、運動、教育、和團隊合作的新世代運動</p><button onclick="about.scrollIntoView()">開始駕駛</button></div></section>
 <section id="about" class="grid">
-<div class="card"><h2>What is Drone Football?</h2><p>Drone football is a competitive team sport using enclosed quadcopters that carry a lightweight ball. Teams work together to attack, defend, and score while avoiding collisions.</p><div class="placeholder">📷 Drone Football Arena Image</div></div>
-<div class="card"><h2>How to Play</h2><ul><li>Two teams compete.</li><li>One scoring drone attempts goals.</li><li>Defenders block opponents.</li><li>Highest score wins.</li></ul><div class="placeholder">📷 Match Action Image</div></div>
+<div class="card"><h2>什麽是無人機足球？</h2><p>無人機足球（Drone Soccer）是一項源自韓國的國際新興科技體育運動，靈感類似電影《哈利波特》中的「魁地奇」。選手透過遙控器操控外層裝有「防撞球形護罩」的四軸無人機進行攻防，賽制分為 3對3 或 5對5。比賽中每隊僅有一台「前鋒」無人機可用於射門得分，其餘隊友則負責防守與戰術掩護。比賽融合了STEAM教育、飛控技術與戰術策略，在台灣已被教育部正式列入重點發展的新興運動項目。教育部也開始舉辦大專、高中到國中小各級的「總統盃」競賽，並補助學校推廣相關課程。</p><img class="img" src="628x331.avif"></div>
+<div class="card"><h2>無人機款式介紹</h2><p>Feeby 無人機</p><ul><li>直徑尺寸：12.5cm</li><li>起飛重量：45g</li><li>飛行時間：5 分鐘</li><li>電池規格：1S 3.7V 450mAh 80C 鋰電池</li><li>適用情境：室內飛行練習與 STEM 教育</li></ul><p>GT2 無人機</p><ul><li>直徑尺寸：20cm</li><li>起飛重量：98g</li><li>飛行時間：6 到 8 分鐘</li><li>電池規格：2S 7.4V 550mAh 80C 鋰電池</li><li>適用情境：STEM 教育與青少年競賽中</li></ul><p>天穹無人機</p><ul><li>直徑尺寸：20cm</li><li>起飛重量：100g</li><li>飛行時間：6 到 9 分鐘</li><li>電池規格：2S 7.4V 450mAh 80C 鋰電池</li><li>適用情境：教育、科技體驗與台灣官方賽事</li></ul></div>
 </section>
-<section id="play" class="grid">
-<div class="card"><h2>Controls</h2><p>Typical controller sticks:</p><ul><li>Throttle: Up/Down</li><li>Yaw: Turn Left/Right</li><li>Pitch: Forward/Back</li><li>Roll: Left/Right movement</li></ul><div class="placeholder">📷 Controller Diagram</div></div>
-<div class="card"><h2>Flying Tips</h2><p>Practice hovering, smooth turns, coordinated team movement, and obstacle avoidance before competitive play.</p></div>
+<section id="controls" class="grid">
+<div class="card"><h2>無人機遙控器操作</h2><p>Feeby 無人機</p><ul><li>油門控制搖桿 (左邊)：控制飛行高度與旋轉。往上推飛機上升，往下拉飛機下降；往左推飛機原地左轉，往右推飛機原地右轉。</li><li>主控制搖桿 (右邊)：控制飛行方向。往上推飛機前進，往下拉飛機後退，往左飛機向左平移，往右飛機向右平移。</li><li>左上角按鍵：電門/翻滾。</li><li>右上角按鍵：改變飛行速度/自動起飛&降落。</li><li>左下角按鍵：定高模式/微調。</li><li>右下角按鍵：改變 LED 顔色/切換有頭和無頭模式。</li><li>校正：將左右控制搖桿往右下方拉。</li></ul><p>GT2 無人機</p><ul><li>油門控制搖桿 (左邊)：控制飛行高度與旋轉。往上推飛機上升，往下拉飛機下降；往左推飛機原地左轉，往右推飛機原地右轉。</li><li>主控制搖桿 (右邊)：控制飛行方向。往上推飛機前進，往下拉飛機後退，往左飛機向左平移，往右飛機向右平移。</li><li>中間搖桿：微調。</li><li>左右開關：電門。</li><li>左下角按鍵：按一下改變 LED 顔色，按兩下切換有頭和無頭模式。</li><li>右下角按鍵：改變飛行速度。</li><li>校正：將左右控制搖桿往中下方拉。</li></ul><p>天穹無人機</p><img class="img" src="controls.png"></div>
 </section>
-<section id="repair" class="grid">
-<div class="card"><h2>Repairing Drones</h2><ol><li>Power off.</li><li>Inspect frame.</li><li>Replace damaged propellers.</li><li>Check motors.</li><li>Reconnect loose wires.</li><li>Test safely.</li></ol><div class="placeholder">📷 Repair Process</div></div>
-<div class="card"><h2>Maintenance Checklist</h2><p>✓ Battery health<br>✓ Propellers<br>✓ Screws<br>✓ Motors<br>✓ Flight controller<br>✓ Firmware updates</p></div>
+<section id="battery" class="grid">
+<div class="card"><h2>無人機電量對照表</h2><p>無人機通常使用鋰聚合物電池（LiPo）。透過觀察單顆電池的電壓，可以估算剩餘電量百分比。單顆電池標準電壓為 3.70V，充飽時為 4.20V。每 0.10V 的變化，大約代表 20% 的電量。</p><ul><li>4.20V 以上：100%（充飽狀態）</li><li>4.00V ~ 4.10V：70% ~ 90%（電量充足，可正常飛行）</li><li>3.85V：約50%（最佳保存電壓）</li><li>3.70V ~ 3.80V：10% ~ 25%（建議準備降落充電）</li><li>3.50V 以下：接近0%（過度放電會永久損壞電池）</li></ul><p>無人機通常由多顆電芯串聯（簡稱 S）組成。請將上述的單顆電壓乘以電池的「S數」。計算公式： 總電壓 = 單片電芯電壓 × S數。</p></div>
+<div class="card"><h2>無人機電池注意事項</h2><p>使用建議</p><ul><li>充飽後盡量當天使用。</li><li>長時間不用，建議放在 3.85V 左右保存。</li><li>不要把電池放在高溫車內或陽光直曬處。</li></ul><p>安全警戒</p><ul><li>膨脹、破皮、異味，請停止使用。</li><li>低於 3.50V 不建議繼續放電。</li><li>充電時請有人看顧，避免無人充電。</li></ul></div>
 </section>
-<footer>Designed with a futuristic glassmorphism style • Drone Football Demo</footer>
+<section id="rules" class="grid">
+<div class="card"><h2>無人機足球怎麽玩？</h2><p>基本賽制與組隊</p><ul><li>機體限制：無人機需具備圓形防護外框以阻擋碰撞。機體重量、尺寸及馬達種類等依各賽事級別規定（如公開組、青少年組、有刷/無刷電機組）進行規範。</li><li>隊伍編制：兩隊對抗，每隊約 3 至 5 名球員上場。</li><li>角色分工：隊伍中僅有 1 台指定為「前鋒（Striker）」，其餘為「場地球員」負責防守與戰術掩護。</li></ul><p>得分機制</p><ul><li>射門得分：只有己方的「前鋒」無人機穿過對方懸掛的圓形球門（Goal Ring）才可得 1 分。</li><li>防守限制：非前鋒球員穿過球門不予計分。</li><li>連續得分限制：為避免連續得分，當一隊進球後，該隊所有的無人機必須全體返回自己半場（中線後），方可發動下一次進攻，否則將判罰失誤。</li></ul><p>賽事控管與犯規</p><ul><li>時間與中斷：比賽開始前有 3 分鐘準備期及 10 秒預備信號。除安全因素由主裁判中斷外，比賽期間不可隨意暫停。</li><li>警告機制：若有未授權人員進入飛行區、惡意衝撞落地靜止的球機、或球員對裁判及對手有不文明行為，裁判可給予警告、黃牌或紅牌。</li><li>紅牌處罰：累計兩張黃牌或直接領紅牌的球員將被驅逐，該隊在剩餘局數中須少操作一台無人機應戰。</li></ul></div>
+</section>
+<footer>2026 Drone Football Summer Camp • Team 5</footer>
 <script>
-if(localStorage.theme==='dark')document.body.classList.add('dark');
+const body = document.body;
+const toggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark");
+    toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+    body.classList.toggle("dark");
+
+    if (body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+    } else {
+        localStorage.setItem("theme", "light");
+    }
+});
+
+const container = document.getElementById("droneContainer");
+
+const droneImages = [
+    "bluedrone.png",
+    "reddrone.png"
+];
+
+function spawnDrone(){
+
+    const drone = document.createElement("img");
+
+    drone.className = "flyingDrone";
+
+    drone.src = droneImages[Math.floor(Math.random()*droneImages.length)];
+
+    const size = 25 + Math.random()*35;
+    drone.style.width = size + "px";
+
+    const y = Math.random()*(window.innerHeight-100);
+
+    const duration = 12 + Math.random()*15;
+
+    const direction = Math.random()>0.5;
+
+    if(direction){
+
+        drone.style.left = "-80px";
+        drone.style.top = y+"px";
+
+        drone.animate([
+            {transform:"translateX(0px) rotate(0deg)"},
+            {transform:`translateX(${window.innerWidth+200}px) rotate(360deg)`}
+        ],{
+            duration:duration*1000,
+            easing:"linear"
+        });
+
+    }else{
+
+        drone.style.left = window.innerWidth+80+"px";
+        drone.style.top = y+"px";
+
+        drone.style.transform="scaleX(-1)";
+
+        drone.animate([
+            {transform:"translateX(0px) scaleX(-1)"},
+            {transform:`translateX(-${window.innerWidth+200}px) scaleX(-1)`}
+        ],{
+            duration:duration*1000,
+            easing:"linear"
+        });
+
+    }
+
+    container.appendChild(drone);
+
+    setTimeout(()=>{
+        drone.remove();
+    },duration*1000);
+}
+
+setInterval(spawnDrone,1800);
+
+for(let i=0;i<6;i++){
+    setTimeout(spawnDrone,i*600);
+}
 </script>
 </body></html>
